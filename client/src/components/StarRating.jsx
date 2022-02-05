@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useState } from 'react';
 import { FaStar } from 'react-icons/fa';
 
@@ -6,6 +7,9 @@ import { FaStar } from 'react-icons/fa';
 const StarRating = () => {
   const [rating, setRating] = useState(null);
 
+  const sendRating = () => {
+    axios.post()
+  }
   return (
     <div>
       {[...Array(5)].map((star, i) => {

@@ -2,6 +2,7 @@ import React, { useContext } from 'react'
 import { useLocation } from 'react-router-dom'
 import { ingredientMap } from '../../utils/parseIng'
 import { UserContext } from '../userContext'
+import StarRating from '../components/StarRating.jsx';
 import { imageUrlParser } from '../../utils/imageUrls'
 
 const CustomDrinkView = () => {
@@ -94,6 +95,7 @@ const CustomDrinkView = () => {
           <br />
           <h5>Directions</h5>
           <p>{instructions}</p>
+          <StarRating />
           {userButtons()}
           <br></br>
           <br></br>
