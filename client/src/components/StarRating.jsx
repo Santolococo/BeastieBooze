@@ -9,7 +9,13 @@ const StarRating = () => {
   const [hover, setHover] = useState(null);
 
   const sendRating = () => {
-    axios.post()
+    //send a rating to the array in the database
+    axios.post('/routes/ratings/')
+  }
+  const setRating = () => {
+    //use a get request to get the array of numbers that are past ratings. loop through the array of numbers and set the default rating
+    //to the average of the ratings.
+    axios.get('')
   }
   return (
     <div>

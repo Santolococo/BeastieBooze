@@ -105,6 +105,14 @@ usersRouter.patch('/ratings/:id', (req, res) => {
     })
 })
 
+//retrieve the ratings array
+usersRouter.get('/ratings/:id', (req, res) => {
+  const { id, ratings } = req.params;
+
+  getRatings(id, ratings)
+    .then((data))
+})
+
 // Gets all reviews for a given libation by drinkId lookup.
 usersRouter.get('/getReviews/:id', (req, res) => {
   const { id } = req.params;

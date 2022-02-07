@@ -76,6 +76,7 @@ const addRating = async (id, data) => {
     { $push: { ratings: data } },
     { new: true }
   )
+  return ratingList
 };
 
 module.exports = {

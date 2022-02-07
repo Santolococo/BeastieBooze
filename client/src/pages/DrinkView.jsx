@@ -3,7 +3,7 @@ import { useParams, useLocation } from 'react-router-dom';
 import { Modal, Button } from 'react-bootstrap';
 import Review from './Review';
 import axios from 'axios';
-
+import moment from 'moment';
 import { BoozeContext } from '../boozeContext';
 import { UserContext } from '../userContext';
 
@@ -29,6 +29,9 @@ const DrinkView = () => {
       .then(({ data }) => {
         setADrink(data.drinks[0]);
       })
+      .then(() => {
+        getReviews();
+      })
       .catch((err) => console.error('THIS IS OUR ERROR!', err, drinkId));
   }, []);
 
@@ -36,7 +39,6 @@ const DrinkView = () => {
 
   const { isLoggedIn, favoriteDrinks, toggleFavorite, removeFavorite } =
     useContext(UserContext);
-  // console.log(UserContext, 31);
 
   // grab what we need from drink object, reassign names
   const {
@@ -54,6 +56,12 @@ const DrinkView = () => {
       .get(`/routes/users/getReviews/${id}`)
       .then(({ data }) => {
         console.log(data, 56);
+        data.map((rev) => {
+          rev.created_at = moment(rev.created_at).format(
+            'dddd, MMMM Do YYYY, h:mm a'
+          );
+          return rev;
+        });
         setReviews(data);
       })
       .catch((err) => {
@@ -129,11 +137,11 @@ const DrinkView = () => {
       </div>
       <div>
         <h2 className='page-heading'>User Reviews:</h2>
-        <div className='form-control'>
+        <div style={{ margin: '40px' }}>
           {reviews.map((review, i) => (
             <p
               key={i}
-            >{`${review.review} - ${review.username}, local-time-from-db`}</p>
+            >{`${review.review} - ${review.username}, ${review.created_at}`}</p>
           ))}
         </div>
       </div>

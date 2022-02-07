@@ -3,7 +3,7 @@ const express = require('express');
 const path = require('path');
 const router = require('./routes/index.js');
 
-const PORT = 8080;
+const PORT = 8000;
 const DIST_DIR = path.resolve(__dirname, '..', 'client/dist');
 const app = express();
 

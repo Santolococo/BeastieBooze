@@ -1,6 +1,6 @@
 const dotenv = require('dotenv');
 dotenv.config();
-
+const moment = require('moment');
 const mongoose = require('mongoose');
 ////////////////////////////////////////////////////////
 const DATABASE = process.env.DB_NAME || 'beastie-boozew';
@@ -19,6 +19,7 @@ mongoose
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 
+<<<<<<< HEAD
 // Adding review schema. maybe....
 const ReviewSchema = new mongoose.Schema({
   username: String,
@@ -27,6 +28,18 @@ const ReviewSchema = new mongoose.Schema({
   drinkId: Number,
   ratings: [Number]
 });
+=======
+// Adding review schema.
+const ReviewSchema = new mongoose.Schema(
+  {
+    username: String,
+    googleId: String,
+    review: String,
+    drinkId: Number,
+  },
+  { timestamps: { createdAt: 'created_at' } }
+);
+>>>>>>> 0124f3cc6bca06d0a02c3b53c07f4ec0e1e0f661
 
 const Review = mongoose.model('Review', ReviewSchema);
 
