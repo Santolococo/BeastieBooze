@@ -2,27 +2,39 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const mongoose = require('mongoose');
-
-const DATABASE = process.env.DB_NAME || 'beastie-booze';
+////////////////////////////////////////////////////////
+const DATABASE = process.env.DB_NAME || 'beastie-boozew';
 // for dev - uncomment the next line and comment out line 10
 // const dbLocation = `mongodb://localhost:27017/${DATABASE}`;
 // for prod
 const dbLocation = `${process.env.ATLAS_URL}/${DATABASE}`;
 // const dbLocation = process.env.ATLAS_URL;
-
-mongoose.connect(dbLocation, {useNewUrlParser: true, useUnifiedTopology: true})
+mongoose
+  .connect(dbLocation, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     console.log(`sucessfully connected! ${DATABASE}`);
-  }).catch(err => console.error('Failed to connect to database', err));
+  })
+  .catch((err) => console.error('Failed to connect to database', err));
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
+
+// Adding review schema. maybe....
+const ReviewSchema = new mongoose.Schema({
+  username: String,
+  googleId: String,
+  review: String,
+  drinkId: Number,
+  ratings: [Number]
+});
+
+const Review = mongoose.model('Review', ReviewSchema);
 
 const UserSchema = new mongoose.Schema({
   googleId: String, // not sure if this will a string or a number, need to check once we can get data from google
   username: String,
   favorites: [],
-  creations: []
+  creations: [],
 });
 
 const DrinkSchema = new mongoose.Schema({
@@ -31,7 +43,12 @@ const DrinkSchema = new mongoose.Schema({
   ingredients: {},
   alcoholic: Boolean,
   createdBy: String,
-  rating: Array
+  reviews: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Review',
+    },
+  ],
   //add a createdBy to the drinkSchema to link to Users once created
 });
 
@@ -39,13 +56,13 @@ const User = mongoose.model('User', UserSchema);
 const Drink = mongoose.model('Drink', DrinkSchema);
 
 const addDrink = async (drink) => {
-  const { drinkName: name, instructions, ingredients, alcoholic } = drink
+  const { drinkName: name, instructions, ingredients, alcoholic } = drink;
   const newDrink = new Drink({
     name,
     instructions,
     ingredients,
-    alcoholic
-  })
+    alcoholic,
+  });
   await newDrink.save();
 };
 
@@ -58,4 +75,5 @@ module.exports = {
   Drink,
   addDrink,
   getDrinks,
+  Review,
 };

@@ -6,6 +6,7 @@ import { FaStar } from 'react-icons/fa';
 
 const StarRating = () => {
   const [rating, setRating] = useState(null);
+  const [hover, setHover] = useState(null);
 
   const sendRating = () => {
     axios.post()
@@ -22,10 +23,13 @@ const StarRating = () => {
               value={ratingValue}
               style={{ display: 'none' }}
               onClick={() => setRating(ratingValue)}
+              
             />
             <FaStar
-              color={ratingValue <= rating ? '#ffc107' : '#e4e5e9'}
+              color={ratingValue <= (hover || rating) ? '#ffc107' : '#e4e5e9'}
               className='star'
+              onMouseEnter={() => setHover(ratingValue)}
+              onMouseLeave={() => setHover(null)}
             />
           </label>
         );

@@ -9,9 +9,13 @@ import {
   InputGroup,
   FormControl,
 } from 'react-bootstrap';
+import { UserContext } from '../userContext';
+import StarRating from '../components/StarRating.jsx';
 import axios from 'axios';
 
-const Review = (props) => {
+const Review = ({ aDrink, getReviews }) => {
+  const { userInfo } = useContext(UserContext);
+
   const {
     idDrink: id,
     strDrink: name,
@@ -19,7 +23,7 @@ const Review = (props) => {
     strAlcoholic: alcoholic,
     strGlass: glass,
     strInstructions: directions,
-  } = props.aDrink;
+  } = aDrink;
 
   const [show, setShow] = useState(false);
 
@@ -29,17 +33,23 @@ const Review = (props) => {
   const [userReview, setUserReview] = useState('');
 
   const handleReviewChange = (e) => {
-    setReview(e.target.value);
+    e.preventDefault();
+    setUserReview(e.target.value);
   };
-
   const submitReview = (userReview) => {
-    const { getReviews } = props;
-    const userAndReview = { text: userReview };
+    const { googleId, username } = userInfo;
+
+    const userAndReview = {
+      review: userReview,
+      id: googleId,
+      drinkId: id,
+      username,
+    };
     return axios
-      .post('/')
+      .post('/routes/users/reviews', userAndReview)
       .then(() => {
         alert('Thank You For Your Feedback!');
-        // getReviews();
+        getReviews();
       })
       .catch((err) => {
         console.error(err);
@@ -62,6 +72,7 @@ const Review = (props) => {
             <Row className='align-items-center'>
               <InputGroup className='mb-2'>
                 <InputGroup.Text>Review</InputGroup.Text>
+                <StarRating/>
                 <textarea
                   rows='6'
                   cols='50'
@@ -80,7 +91,7 @@ const Review = (props) => {
           <Button
             type='button'
             className='btn btn-dark'
-            onClick={(userReview) => {
+            onClick={() => {
               submitReview(userReview);
               handleClose();
             }}

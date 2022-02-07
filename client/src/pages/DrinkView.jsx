@@ -19,7 +19,7 @@ const DrinkView = () => {
   const [reviews, setReviews] = useState([
     {
       name: 'Zack',
-      text: 'This drink was incredible and my kids loved it. So refreshing!',
+      review: 'This drink was incredible and my kids loved it. So refreshing!',
     },
   ]);
 
@@ -51,9 +51,10 @@ const DrinkView = () => {
   // Function to grab all reviews for a given drink
   const getReviews = () => {
     return axios
-      .get('/')
-      .then((data) => {
-        console.log(data);
+      .get(`/routes/users/getReviews/${id}`)
+      .then(({ data }) => {
+        console.log(data, 56);
+        setReviews(data);
       })
       .catch((err) => {
         console.error(err);
@@ -132,7 +133,7 @@ const DrinkView = () => {
           {reviews.map((review, i) => (
             <p
               key={i}
-            >{`${review.text} - ${review.name}, local-time-from-db`}</p>
+            >{`${review.review} - ${review.username}, local-time-from-db`}</p>
           ))}
         </div>
       </div>
